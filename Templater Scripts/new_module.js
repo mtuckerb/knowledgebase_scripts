@@ -9,7 +9,6 @@ module.exports = async function(app, tp, directoryPath) {
     }
     const cC = {}
     const courses = await tp.user.getCourses(app); 
-    const subdirectories = ["SWO-201 - Intro to Social Work","PHI-275 - Nature of Compassion", "PSY-101 - Intro to Psychology", "ENG-102 - Introduction to Writing"]
     const course = await tp.system.suggester(subName(courses), courses) //subName(subdirectories), subdirectories);
     if (!course) return 
     cC.course = course
@@ -24,7 +23,7 @@ module.exports = async function(app, tp, directoryPath) {
       cC.fullPath = `${directoryPath}/${cC.course}/${cC.courseId} - Module ${cC.moduleNumber}/Week ${cC.weekNumber}/`
     } else if (cC.moduleNumber) {
         cC.fullPath = `${directoryPath}/${cC.course}/${cC.courseId} - Module ${cC.moduleNumber}/`
-    } else if (weekNumber) {
+    } else if (cC.weekNumber) {
         cC.fullPath = `${directoryPath}/${cC.course}/${cC.courseId} - Week ${cC.weekNumber}/`
     }
     await tp.file.move(`${cC.fullPath}${cC.courseId}${cC.moduleNumber ? "."+cC.moduleNumber : ''}${cC.weekNumber ? "."+cC.weekNumber : '' } ${cC.dayOfWeek}`)
