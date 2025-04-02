@@ -16,7 +16,7 @@ module.exports = async function(app, tp, directoryPath) {
 
     cC.moduleNumber = await tp.system.prompt("Module Number")
     cC.weekNumber = await tp.system.prompt("Week Number (or blank for none)")
-    cC.courseId = `${cC.course?.split(" - ").shift()}`
+    cC.courseId = `${cC.course?.split(" - ").shift().toUpperCase()}`
     cC.dayOfWeek =  await tp.system.suggester(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
     if (cC.moduleNumber.length < 1 && cC.weekNumber.length < 1) {return "Must provide either module number or week number."}
     if (cC.moduleNumber && cC.weekNumber) {

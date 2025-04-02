@@ -20,7 +20,6 @@ const processDueDates = async (dv, courseId) => {
           const columns = line.split('|')
             .map(c => c.trim())
           .filter(c => c)
-
           let dueDate = columns[0] 
           let assignment = columns[1] 
           if (!Date.parse(dueDate)) {continue}
@@ -30,11 +29,11 @@ const processDueDates = async (dv, courseId) => {
              continue 
             }
             else if (moment(dueDate) < moment()?.add(1, "w")) {
-              formattedDueDate = `<span style="background-color: #FF808D;">${moment(dueDate)?.format("YYYY-MM-DD")}</span>`
+              formattedDueDate = `<span style="background-color: #FF808D;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
             } else if (moment(dueDate) < moment().add(2, "w")) {
-              formattedDueDate = `<span style="background-color: #FCFFA5; color: black;">${moment(dueDate)?.format("YYYY-MM-DD")}</span>`
+              formattedDueDate = `<span style="background-color: #FCFFA5; color: black;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
             }else {
-              formattedDueDate = moment(dueDate)?.format("YYYY-MM-DD")
+              formattedDueDate = moment(dueDate)?.format("YYYY-MM-DD ddd")
             } 
             allEntries.push([dueDate,formattedDueDate,assignment,`[[${path}]]` ]); 
           }
@@ -42,10 +41,8 @@ const processDueDates = async (dv, courseId) => {
       } 
     }catch(e) {console.log(e, page)}
   }
-  console.log(allEntries)
-
-  allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]])
-  dv.table(["Due Date", "Task Description", "File"], allEntries)
+  dv.table(["Due Date", "Task Description", "File"], allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]]))
 }
 
 module.exports = {processDueDates}
+window.processDueDates = processDueDates;
