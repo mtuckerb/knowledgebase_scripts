@@ -11,7 +11,6 @@ const getTexts= async (app, course) => {
         text?.tags?.some(tag => tag.match(course))
     )).split(',')
   } else {textMatches = texts}
-  console.log(textMatches, typeof textMatches)
   return textMatches.map(text => text?.texts)
     ?.filter(Boolean)
     ?.filter((value, index, array) => array.indexOf(value) === index)
