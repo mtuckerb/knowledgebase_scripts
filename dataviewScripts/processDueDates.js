@@ -25,16 +25,17 @@ const processDueDates = async (dv, courseId) => {
           if (!Date.parse(dueDate)) {continue}
           const uniqueRow = !allEntries.some(e => (e[0].match(moment(dueDate)?.format("YYYY-MM-DD")) && e[1] == assignment))
           if (assignment && uniqueRow) { 
-            if (moment(dueDate) < moment()) {
+            if ( moment(dueDate)?.isSameOrBefore(moment().add(1,"d")), 'day') {
              continue 
             }
-            else if (moment(dueDate) < moment()?.add(1, "w")) {
+            else if (moment(dueDate).isAfter(moment().subtract(1,"w"))) {
               formattedDueDate = `<span style="background-color: #FF808D;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
-            } else if (moment(dueDate) < moment().add(2, "w")) {
+            } else if (moment(dueDate).isAfter(moment().subtract(2,"w"))) { 
               formattedDueDate = `<span style="background-color: #FCFFA5; color: black;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
             }else {
               formattedDueDate = moment(dueDate)?.format("YYYY-MM-DD ddd")
             } 
+            console.log(formattedDueDate, dueDate, assignment, path) 
             allEntries.push([dueDate,formattedDueDate,assignment,`[[${path}]]` ]); 
           }
         }
