@@ -25,7 +25,8 @@ const processDueDates = async (dv, courseId) => {
           if (!Date.parse(dueDate)) {continue}
           const uniqueRow = !allEntries.some(e => (e[0].match(moment(dueDate)?.format("YYYY-MM-DD")) && e[1] == assignment))
           if (assignment && uniqueRow) { 
-            if ( moment(dueDate)?.isSameOrBefore(moment().add(1,"d")), 'day') {
+            if ( moment(dueDate)?.isAfter(moment().add(1,"d")), 'day') {
+              console.log("Failing: ", moment(dueDate).format("YYYY-MM-DD"), assignment, path) 
              continue 
             }
             else if (moment(dueDate).isAfter(moment().subtract(1,"w"))) {
