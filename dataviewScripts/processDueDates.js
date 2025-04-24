@@ -41,7 +41,8 @@ const processDueDates = async (dv, courseId) => {
       } 
     }catch(e) {console.log(e, page)}
   }
-  dv.table(["Due Date", "Task Description", "File"], allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]]))
+  const table = dv.markdownTable(["Due Date", "Task Description", "File"], allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]]))
+  dv.el('div', table)
 }
 
 module.exports = {processDueDates}
