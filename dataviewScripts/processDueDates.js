@@ -1,6 +1,6 @@
-const processDueDates = async (dv, courseId) => {
-  const pages = dv.pages(`${courseId}`) 
+const processDueDates = async (dv, courseId, cutOff=[]) => {
 
+  const pages = dv.pages(`${courseId}`) 
   .filter(p => p.file.name !== courseId && p.file.ext == "md") 
 
   let allEntries = [];
@@ -23,15 +23,20 @@ const processDueDates = async (dv, courseId) => {
           let dueDate = columns[0] 
           let assignment = columns[1] 
           if (!Date.parse(dueDate)) {continue}
+          if (cutOff.length == 1) {
+            if (moment(dueDate).isBetween(cutOff[1], cutOff[0])) {
+              continue
+            }
+          }
           const uniqueRow = !allEntries.some(e => (e[0].match(moment(dueDate)?.format("YYYY-MM-DD")) && e[1] == assignment))
           if (assignment && uniqueRow) { 
-            if (moment(dueDate) < moment()) {
+            if ( moment(dueDate)?.isBefore(moment().add(1,"d"), 'day')) {
              continue 
             }
-            else if (moment(dueDate) < moment()?.add(1, "w")) {
-              formattedDueDate = `<span style="background-color: #FF808D;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
-            } else if (moment(dueDate) < moment().add(2, "w")) {
-              formattedDueDate = `<span style="background-color: #FCFFA5; color: black;">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
+            else if (moment(dueDate).isAfter(moment().subtract(1,"w"))) {
+              formattedDueDate = `<span class="due one_week">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
+            } else if (moment(dueDate).isAfter(moment().subtract(2,"w"))) { 
+              formattedDueDate = `<span class="due two_weeks">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
             }else {
               formattedDueDate = moment(dueDate)?.format("YYYY-MM-DD ddd")
             } 
@@ -41,7 +46,8 @@ const processDueDates = async (dv, courseId) => {
       } 
     }catch(e) {console.log(e, page)}
   }
-  dv.table(["Due Date", "Task Description", "File"], allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]]))
+  const table = dv.markdownTable(["Due Date", "Task Description", "File"], allEntries.sort((a,b) => moment(a[0]) - moment(b[0])).map(a => [a[1],a[2],a[3]]))
+  dv.el('div', table)
 }
 
 module.exports = {processDueDates}
