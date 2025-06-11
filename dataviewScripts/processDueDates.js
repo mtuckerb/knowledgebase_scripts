@@ -1,4 +1,6 @@
 const processDueDates = async (dv, courseId, cutOff=[]) => {
+  const startDate = cutOff.length > 0? moment(cutOff[0]).format("YYYY-MM-DD") : moment().subtract(1, "day").format("YYYY-MM-DD")
+  const endDate = moment(cutOff[1]).format("YYYY-MM-DD")
 
   const pages = dv.pages(`${courseId}`) 
   .filter(p => p.file.name !== courseId && p.file.ext == "md") 
@@ -23,12 +25,12 @@ const processDueDates = async (dv, courseId, cutOff=[]) => {
           let dueDate = columns[0] 
           let assignment = columns[1] 
           if (!Date.parse(dueDate)) {continue}
-          if (moment(dueDate).isBetween(cutOff[0], cutOff[1]) || (cutOff.length == 0) ) {
+          if (moment(dueDate).isBetween(startDate, endDate) || (cutOff.length == 0) ) {
             console.log(`Cutoff date is within bounds for: ${assignment}`)
             const uniqueRow = !allEntries.some(e => (e[0].match(moment(dueDate)?.format("YYYY-MM-DD")) && e[1] == assignment))
             if (assignment && uniqueRow) { 
-              if ( moment(dueDate)?.isBefore(moment().add(2,"d"), 'day')) {
-                // continue 
+              if ( moment(dueDate)?.isBefore(startDate) ){
+                 continue 
               }
               else if (moment(dueDate).isAfter(moment().subtract(1,"w"))) {
                 formattedDueDate = `<span class="due one_week">${moment(dueDate)?.format("YYYY-MM-DD ddd")}</span>`
