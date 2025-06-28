@@ -1,18 +1,9 @@
-
-const getFrontmatterMatchingKey = require(app.vault.adapter.basePath + '/Supporting/Templater Scripts/getFrontmatterMatchingKey.js')
-
+const getCourseHome = require(app.vault.adapter.basePath + '/Supporting/Templater Scripts/getCourseHome.js')
 
 
-const getTexts= async (app, course) => {
-  const texts = await getFrontmatterMatchingKey(app, "texts")
-  let textMatches = []
-  if (course?.length > 0) {
-    textMatches = texts.filter(text => (
-        text?.tags?.some(tag => tag.match(course))
-    )).split(',')
-  } else {textMatches = texts}
-  return textMatches.map(text => text?.texts)
-    ?.filter(Boolean)
-    ?.filter((value, index, array) => array.indexOf(value) === index)
+const getTexts = (tp, courseId) => {
+  let course =  tp.user.getCourseHome(courseId)[0]
+  const texts = course?.frontmatter?.texts || []
+  return texts
 }
 module.exports = getTexts

@@ -16,7 +16,7 @@ module.exports = async function(app, tp, directoryPath) {
     directoryPath
   ).path
   const season = path.split("/")[1]
-  let texts = await tp.user.getTexts(app)
+  let texts = tp.user.getTexts(tp, course.split(' - ')[0])
   const re = /\[\[([^\[]+?\.[\w]+)\]\]$/;  // Adjusted regex pattern
   texts = texts.flat().map(text => (text.match(re)?.[1] || text));
 
