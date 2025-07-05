@@ -24,7 +24,8 @@ const processDueDates = async (dv, courseId, cutOff=[]) => {
           .filter(c => c)
           let dueDate = columns[0] 
           let assignment = columns[1] 
-          if (!Date.parse(dueDate)) {continue}
+          if (!Date.parse(dueDate) || assignment.match(/✅/)) {continue}
+          assignment = assignment?.match(/[A-Z]{3}-[0-9]{3}/) ? assignment : `#${page.course_id} - ${assignment}`
           if (moment(dueDate).isBetween(startDate, endDate) || (cutOff.length == 0) ) {
             console.log(`Cutoff date is within bounds for: ${assignment}`)
             const uniqueRow = !allEntries.some(e => (e[0].match(moment(dueDate)?.format("YYYY-MM-DD")) && e[1] == assignment))
