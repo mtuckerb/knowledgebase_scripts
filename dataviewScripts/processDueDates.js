@@ -1,4 +1,4 @@
-const processDueDates = ( courseId, cutOff = []) => {
+const processDueDates = (courseId, cutOff = []) => {
   const startDate =
     cutOff.length > 0
       ? moment(cutOff[0]).format("YYYY-MM-DD")
