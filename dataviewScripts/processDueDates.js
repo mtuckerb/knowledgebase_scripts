@@ -19,9 +19,9 @@ const processDueDates = async (dv, courseId, cutOff = []) => {
     const path = page.file.path
     try {
       const file = 
-      dv.app.vault.getFileByPath(path).then(f => file = f )
+      app.vault.getFileByPath(path).then(f => file = f )
       const content = 
-      dv.app.vault.read(file).then(c => content = c )
+      vault.read(file).then(c => content = c )
       const regex = /# Due Dates([\s\S]*?)(?=\n#|$)/
       const matches = content?.match(regex)
       if (matches) {
