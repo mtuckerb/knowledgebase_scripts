@@ -76,4 +76,4 @@
       dv.el("table", table)
 }
 
-module.exports = { processDueDates }
+module.exports = { processDueDates };
