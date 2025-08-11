@@ -1,4 +1,4 @@
-const processDueDates = (dv, courseId, cutOff = []) => {
+const processDueDates = ( courseId, cutOff = []) => {
   const startDate =
     cutOff.length > 0
       ? moment(cutOff[0]).format("YYYY-MM-DD")
@@ -24,8 +24,7 @@ const processDueDates = (dv, courseId, cutOff = []) => {
               .split("|")
               .map((c) => c.trim())
               .filter((c) => c)
-            let dueDate = columns[0]
-            let assignment = columns[1]
+            let [dueDate, assignment] = columns
             if (!Date.parse(dueDate) || assignment?.match(/✅/)) {
               continue
             }
