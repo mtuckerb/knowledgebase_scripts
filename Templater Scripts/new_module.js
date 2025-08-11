@@ -15,8 +15,8 @@ module.exports = async function (app, tp, directoryPath) {
   const path = app.metadataCache.getFirstLinkpathDest(
     course,
     directoryPath
-  ).path
-  cC.season = path.split("/")[1]
+  )?.path
+  cC.season = path?.split("/")[1]
   cC.course = course
   cC.discipline = course.split("-")[0]
 

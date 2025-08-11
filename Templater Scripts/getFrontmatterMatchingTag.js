@@ -1,4 +1,4 @@
-const getFrontmatterMatchingTag = async (app, tag) => {
+module.exports =  async (app, tag) => {
   const mdCache = app.metadataCache.metadataCache
   let result = []
   for (const hash in mdCache) { 
@@ -15,4 +15,4 @@ const getFrontmatterMatchingTag = async (app, tag) => {
 
 
 
- module.exports = getFrontmatterMatchingTag
+

@@ -1,5 +1,4 @@
-const getFrontmatterMatchingTag = require(app.vault.adapter.basePath + '/Supporting/Templater Scripts/getFrontmatterMatchingTag.js')
-
+const getFrontmatterMatchingTag = require("Supporting/Templater Scripts/getFrontmatterMatchingTag.js")
 const getCourses = async (app, year, season) => {
   const courses = await getFrontmatterMatchingTag(app, "course_home")
   let courseMatches = []
