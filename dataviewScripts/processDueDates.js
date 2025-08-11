@@ -1,4 +1,4 @@
-const processDueDates = (courseId, cutOff = []) => {
+ function processDueDates(courseId, cutOff = []){
   const startDate =
     cutOff.length > 0
       ? moment(cutOff[0]).format("YYYY-MM-DD")
@@ -77,4 +77,3 @@ const processDueDates = (courseId, cutOff = []) => {
 }
 
 module.exports = { processDueDates }
-exports = { processDueDates }
